@@ -1,26 +1,8 @@
-from abc import ABC, abstractmethod
 from typing import Dict, List
 
 import requests
 
-
-class VacancyAPI(ABC):
-    """Абстрактный класс для работы с API сервиса вакансий."""
-
-    @abstractmethod
-    def _connect(self) -> None:
-        """Абстрактный метод для отправки запроса на базовый URL и проверки статус-кода."""
-        pass
-
-    @abstractmethod
-    def get_vacancies(self, keyword: str) -> List[Dict]:
-        """
-        Абстрактный метод для получения списка вакансий по ключевому слову.
-
-        :param keyword: Ключевое слово.
-        :return: Список словарей с данными.
-        """
-        pass
+from base import VacancyAPI
 
 
 class HeadHunterAPI(VacancyAPI):
