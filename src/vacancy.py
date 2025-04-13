@@ -1,3 +1,6 @@
+from typing import Union
+
+
 class Vacancy:
     """
     Класс для представления вакансии.
@@ -5,7 +8,7 @@ class Vacancy:
 
     __slots__ = ("__title", "__salary", "__description", "__city", "__url")
 
-    def __init__(self, title: str, salary: int, description: str, city: str, url: str) -> None:
+    def __init__(self, title: str, salary: Union[dict, int, None], description: str, city: str, url: str) -> None:
         """
         Инициализирует объект вакансии.
 
@@ -16,10 +19,38 @@ class Vacancy:
         :param url: Ссылка на вакансию.
         """
         self.__title = title.strip() if title else "Без названия"
-        self.__salary = salary if isinstance(salary, int) and salary > 0 else 0
+        self.__salary = self.__parse_salary(salary)
         self.__description = description.strip() if description else "Описание отсутствует"
         self.__city = city.strip() if city else "Город не указан"
         self.__url = url.strip() if url else "Ссылка не указана"
+
+    @staticmethod
+    def __parse_salary(salary: Union[dict, int, None]) -> int:
+        """
+        Метод для обработки зарплаты из API.
+
+        - Если salary — число и > 0, возвращается как есть.
+        - Если salary — словарь:
+            - если есть и 'from', и 'to' — возвращается среднее арифметическое.
+            - если только 'from' — возвращается 'from'.
+            - если только 'to' — возвращается 'to'.
+        - Если salary отсутствует или некорректно — возвращается 0.
+
+        :param salary: Зарплата вакансии (dict, int или None).
+        :return: Обработанная зарплата (int).
+        """
+        if isinstance(salary, int) and salary > 0:
+            return salary
+        if isinstance(salary, dict):
+            _from = salary.get("from")
+            _to = salary.get("to")
+            if _from and _to:
+                return (_from + _to) // 2
+            if _from:
+                return _from
+            if _to:
+                return _to
+        return 0  # Если salary = None или некорректно
 
     def __repr__(self) -> str:
         """Возвращает строковое представление объекта Vacancy."""
