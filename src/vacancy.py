@@ -1,5 +1,7 @@
 from typing import Union
 
+from src.currency import CurrencyConverter
+
 
 class Vacancy:
     """
@@ -7,6 +9,7 @@ class Vacancy:
     """
 
     __slots__ = ("__title", "__salary", "__description", "__city", "__url")
+    _converter = CurrencyConverter()
 
     def __init__(self, title: str, salary: Union[dict, int, None], description: str, city: str, url: str) -> None:
         """
@@ -44,18 +47,20 @@ class Vacancy:
         if isinstance(salary, dict):
             _from = salary.get("from")
             _to = salary.get("to")
+            currency = salary.get("currency", "RUR")
             if _from and _to:
-                return (_from + _to) // 2
+                avg = (_from + _to) // 2
+                return Vacancy._converter.convert_to_rub(avg, currency)
             if _from:
-                return _from
+                return Vacancy._converter.convert_to_rub(_from, currency)
             if _to:
-                return _to
+                return Vacancy._converter.convert_to_rub(_to, currency)
         return 0  # Если salary = None или некорректно
 
     def __repr__(self) -> str:
         """Возвращает строковое представление объекта Vacancy."""
         salary_text = f"{self.__salary} ₽" if self.__salary > 0 else "Зарплата не указана"
-        return f"{self.__title} ({salary_text}) — {self.__url}"
+        return f"{self.__title} | {self.__city} | {salary_text} — {self.__url}"
 
     def __lt__(self, other: object) -> bool:
         """Сравнение вакансий по зарплате (меньше)."""
