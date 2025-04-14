@@ -1,6 +1,6 @@
 from typing import List
 
-from vacancy import Vacancy
+from src.vacancy import Vacancy
 
 
 def filter_by_keywords(vacancies: List[Vacancy], keywords: List[str]) -> List[Vacancy]:

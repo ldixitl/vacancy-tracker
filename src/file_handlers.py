@@ -2,8 +2,8 @@ import json
 import os
 from typing import Dict, List, Union
 
-from base import FileHandler
-from vacancy import Vacancy
+from src.base import FileHandler
+from src.vacancy import Vacancy
 
 
 class JSONFileHandler(FileHandler):

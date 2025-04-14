@@ -2,7 +2,7 @@ from typing import Dict, List
 
 import requests
 
-from base import VacancyAPI
+from src.base import VacancyAPI
 
 
 class HeadHunterAPI(VacancyAPI):

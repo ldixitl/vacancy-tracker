@@ -1,7 +1,7 @@
 from abc import ABC, abstractmethod
 from typing import Dict, List, Union
 
-from vacancy import Vacancy
+from src.vacancy import Vacancy
 
 
 class VacancyAPI(ABC):
