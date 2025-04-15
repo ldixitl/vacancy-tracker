@@ -1,6 +1,7 @@
 from typing import Dict, List
 
 import requests
+from tqdm import tqdm
 
 from src.base import VacancyAPI
 
@@ -28,8 +29,9 @@ class HeadHunterAPI(VacancyAPI):
 
         vacancies = []
         params = {"text": keyword, "page": 0, "per_page": 100}
+        max_pages = 20
 
-        while params["page"] < 20:
+        for _ in tqdm(range(max_pages), desc="Получение данных"):
             response = requests.get(self.__base_url, headers=self.__headers, params=params)
             if response.status_code != 200:
                 break
