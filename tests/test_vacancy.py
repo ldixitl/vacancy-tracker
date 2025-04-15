@@ -11,7 +11,7 @@ class MockConverter:
 
 
 @pytest.fixture(autouse=True)
-def mock_converter(monkeypatch):
+def mock_converter(monkeypatch) -> None:
     """Фикстура для замены настоящего конвертера валют на заглушку."""
     monkeypatch.setattr(Vacancy, "_converter", MockConverter())
 

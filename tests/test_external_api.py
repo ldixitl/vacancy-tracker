@@ -26,7 +26,7 @@ def test_connect_failure(mock_get: Any) -> None:
 
 
 @patch("src.external_api.requests.get")
-def test_get_vacancies_success(mock_get):
+def test_get_vacancies_success(mock_get: Any) -> None:
     """Тест успешного получения нескольких страниц вакансий."""
     # Мокаем _connect() и 2 страницы вакансий, затем пустую
     mock_get.side_effect = [
@@ -45,7 +45,7 @@ def test_get_vacancies_success(mock_get):
 
 
 @patch("src.external_api.requests.get")
-def test_get_vacancies_empty_result(mock_get):
+def test_get_vacancies_empty_result(mock_get: Any) -> None:
     """Тест, если API сразу возвращает пустой список."""
     mock_get.side_effect = [
         MagicMock(status_code=200),  # _connect()
