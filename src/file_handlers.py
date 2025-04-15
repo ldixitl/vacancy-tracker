@@ -13,20 +13,19 @@ class JSONFileHandler(FileHandler):
 
     def __init__(self, filename: str = "vacancies.json") -> None:
         """
-        Инициализирует обработчик JSON-файла для хранения вакансий.
-        Если файл не существует, он создаётся.
-
-        :param filename: Имя JSON-файла (по умолчанию — vacancies.json в папке 'data').
+        Инициализирует обработчик JSON-файла.
+        Если путь абсолютный — используется как есть.
+        Иначе создаётся файл в папке 'data'.
         """
-        path_module = os.path.abspath(os.path.dirname(__file__))
-        path_project = os.path.dirname(path_module)
+        if os.path.isabs(filename):
+            self.__filename = filename
+        else:
+            path_module = os.path.abspath(os.path.dirname(__file__))
+            path_project = os.path.dirname(path_module)
+            data_dir = os.path.join(path_project, "data")
+            os.makedirs(data_dir, exist_ok=True)
+            self.__filename = os.path.join(data_dir, filename)
 
-        # Папка 'data' в корне проекта
-        data_dir = os.path.join(path_project, "data")
-        os.makedirs(data_dir, exist_ok=True)
-
-        # Полный путь к JSON-файлу
-        self.__filename = os.path.join(data_dir, filename)
         if not os.path.exists(self.__filename):
             with open(self.__filename, "w", encoding="utf-8") as file:
                 json.dump([], file, ensure_ascii=False, indent=4)
